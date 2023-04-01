@@ -1,13 +1,14 @@
-var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-var specialChar = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "|", "`", "~", ".", ",", "?", "/", "'", "<", ">", "-", "_"];
-var lowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-var upperCase = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const specialChar = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "|", "`", "~", ".", ",", "?", "/", "'", "<", ">", "-", "_"];
+const lowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const upperCase = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const minPasswordLength = 8;
+const maxPasswordLength = 128;
 
 function getPasswordAttributes() {
   var isLengthValid = false;
   while (!isLengthValid){
-  var passwordLength = prompt("Choose Password Length- Between 8-128 Characters");
+  var passwordLength = prompt(`Choose Password Length Between ${minPasswordLength}-${maxPasswordLength} Characters`);
   isLengthValid = checkLength(passwordLength);
   }
   var useSpecial = confirm("Use Special Characters?");
@@ -21,7 +22,7 @@ function checkLength(passwordLength) {
   if (isNaN(passwordLength)) {
     alert("Must Be a Number");
     return false;     
-  } else if (passwordLength < 8 || passwordLength > 128) {
+  } else if (passwordLength < minPasswordLength || passwordLength > maxPasswordLength) {
     alert("Must Be Between 8-128 Characters");
     return false;
   } else if (passwordLength % 1 != 0) {
