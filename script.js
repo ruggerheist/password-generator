@@ -10,13 +10,17 @@ function getPasswordAttributes() {
   while (!isLengthValid){
   var passwordLength = prompt(`Choose Password Length Between ${minPasswordLength}-${maxPasswordLength} Characters`);
   isLengthValid = checkLength(passwordLength);
-  }
   var useSpecial = confirm("Use Special Characters?");
   var useLower = confirm("Use Lower Case Letters?");
   var useUpper = confirm("Use Upper Case Letters?");
   var useNumerals = confirm("Use Numerals?");
-  return  {useSpecial, useLower, useUpper, useNumerals, passwordLength}
-  
+  if (!useSpecial && !useLower && !useUpper && !useNumerals)
+  {
+    alert("MUST SELECT AT LEAST ONE OPTION!");
+    getPasswordAttributes()
+  }
+  return  {useSpecial, useLower, useUpper, useNumerals, passwordLength};
+  }
 }
 function checkLength(passwordLength) {
   if (isNaN(passwordLength)) {
@@ -36,14 +40,28 @@ function getRandomCharacter(availableCharacters){
   var randomIndex = Math.floor(Math.random()*availableCharacters.length);
   return availableCharacters[randomIndex];
 }
-function buildPasswordArray(){
-  var passwordAttributes = getPasswordAttributes()
-  var passwordArray = []
-  var availableCharacters = [].concat(specialChar, lowerCase, upperCase, numbers);
-  for(let i = 0; i < parseInt(passwordAttributes.passwordLength); i++) {
-    passwordArray.push(getRandomCharacter(availableCharacters));
+function shufflePasswordArray(passwordArray) {
+  for (let i = passwordArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]];
   }
   return passwordArray;
+}
+function buildPasswordArray(){
+  var passwordAttributes = getPasswordAttributes()
+  var passwordArray = [];
+  var availableCharacters = [];
+  var attributeIndex = 0;
+  if (passwordAttributes.useSpecial) availableCharacters.push(specialChar);
+  if (passwordAttributes.useLower) availableCharacters.push(lowerCase);
+  if (passwordAttributes.useUpper) availableCharacters.push(upperCase);
+  if (passwordAttributes.useNumerals) availableCharacters.push(numbers);  
+  for(let i = 0; i < parseInt(passwordAttributes.passwordLength); i++) {   
+    passwordArray.push(getRandomCharacter(availableCharacters[attributeIndex]));
+    attributeIndex++;
+    if (attributeIndex === availableCharacters.length) attributeIndex = 0;
+  }
+  return shufflePasswordArray(passwordArray);
 }
 function generatePassword() {
   var passwordText = document.querySelector("#password");
