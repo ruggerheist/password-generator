@@ -9,7 +9,19 @@ function getPasswordAttributes() {
   var isLengthValid = false;
   while (!isLengthValid){
   var passwordLength = prompt(`Choose Password Length Between ${minPasswordLength}-${maxPasswordLength} Characters`);
-  isLengthValid = checkLength(passwordLength);
+  if (passwordLength === null) {
+    return null;
+  }
+  if (isNaN(passwordLength)) {
+    alert("Must Be a Number");
+    return getPasswordAttributes();     
+  } else if (passwordLength < minPasswordLength || passwordLength > maxPasswordLength) {
+    alert("Must Be Between 8-128 Characters");
+    return getPasswordAttributes();
+  } else if (passwordLength % 1 != 0) {
+    alert("Must Be a Whole Number");
+    return getPasswordAttributes();
+  }
   var useSpecial = confirm("Use Special Characters?");
   var useLower = confirm("Use Lower Case Letters?");
   var useUpper = confirm("Use Upper Case Letters?");
@@ -20,20 +32,6 @@ function getPasswordAttributes() {
     getPasswordAttributes()
   }
   return  {useSpecial, useLower, useUpper, useNumerals, passwordLength};
-  }
-}
-function checkLength(passwordLength) {
-  if (isNaN(passwordLength)) {
-    alert("Must Be a Number");
-    return false;     
-  } else if (passwordLength < minPasswordLength || passwordLength > maxPasswordLength) {
-    alert("Must Be Between 8-128 Characters");
-    return false;
-  } else if (passwordLength % 1 != 0) {
-    alert("Must Be a Whole Number");
-    return false;
-  } else {
-    return true;
   }
 }
 function getRandomCharacter(availableCharacters){
@@ -48,7 +46,10 @@ function shufflePasswordArray(passwordArray) {
   return passwordArray;
 }
 function buildPasswordArray(){
-  var passwordAttributes = getPasswordAttributes()
+  var passwordAttributes = getPasswordAttributes();
+  if (passwordAttributes === null) {
+    return null;
+  }
   var passwordArray = [];
   var availableCharacters = [];
   var attributeIndex = 0;
